@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect ,useState} from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { PermissionsAndroid } from 'react-native';
-import { useEffect } from 'react';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import RNLocation from 'react-native-location';
 
-
-
 const App = () => {
- 
+  
+  
+
+
   useEffect(() => {
     const requestPermission = async () => {
       console.log("RequestPermission got called");
@@ -27,7 +27,6 @@ const App = () => {
 
         if (backgroundgranted === PermissionsAndroid.RESULTS.GRANTED) {
           console.log("Background permission granted");
-          // Do your thing!
         } else {
           console.log("Background permission not granted");
         }
@@ -39,104 +38,89 @@ const App = () => {
     requestPermission();
   }, []);
 
-
-
   RNLocation.configure({
-    distanceFilter: 100, // Meters
+    distanceFilter: 100,
     desiredAccuracy: {
       ios: 'best',
       android: 'balancedPowerAccuracy',
     },
-    // Android only
+  
     androidProvider: 'auto',
-    interval: 5000, // Milliseconds
-    fastestInterval: 10000, // Milliseconds
+    interval: 5000, 
+    fastestInterval: 10000, 
     maxWaitTime: 5000, 
-    // iOS Only
+
     activityType: 'other',
     allowsBackgroundLocationUpdates: false,
-    headingFilter: 1, // Degrees
+    headingFilter: 1,
     headingOrientation: 'portrait',
     pausesLocationUpdatesAutomatically: false,
-    showsBackgroundLocationIndicator: true,
+    showsBackgroundLocationIndicator: false,
   });
-  let locationSubscription = null;
-  let locationTimeout = null;
 
-
-  
-  ReactNativeForegroundService.add_task(
-    () => {
-      const perlocation = async () => {
-        try {
-          const granted = await RNLocation.requestPermission({
-            ios: 'whenInUse',
-            android: {
-              detail: 'coarse',
-            },
-          });
-  
-          if (granted) {
-            return new Promise((resolve, reject) => {
-              const locationSubscription = RNLocation.subscribeToLocationUpdates(
-                (locations) => {
-                  if (locations && locations.length > 0) {
-                    const latitude = locations[0]?.latitude ?? null;
-                    const longitude = locations[0]?.longitude ?? null;
-  
-                    if (latitude !== null && longitude !== null) {
-                      const currentLocation = `${latitude},${longitude}`;
-                      resolve(currentLocation);
-                    } else {
-                      console("NOthing inside location");
-                      resolve(null);
-                    }
-                  } else {
-                    console("NOthing inside subscribeTolocation");
-                    resolve(null);
-                  }
-                }
-              );
-            });
-          }
-          else{
-            console.log("not granted ")
-          }
-        } catch (error) {
-          console.error('Error requesting location permission:', error);
-          throw error;
-        }
-      };
-  
-      perlocation().then((currentLocation) => {
-        console.log('Current Location:', currentLocation);
-      }) .catch((error) => {
-        console.error('Error:', error);
-        // Handle the error appropriately, e.g., log it or perform other actions
+  const perlocation = async () => {
+    try {
+      const granted = await RNLocation.requestPermission({
+        ios: 'whenInUse',
+        android: {
+          detail: 'coarse',
+        },
       });
-      console.log("IIII");
+
+      if (granted) {
+        console.log("permission granted", granted);
+        return new Promise((resolve, reject) => {
+          const locationSubscription = RNLocation.subscribeToLocationUpdates(
+            (locations) => {
+              if (locations && locations.length > 0) {
+                locationSubscription();
+                resolve(locations);
+              } else {
+                locationSubscription();
+                resolve(null);
+              }
+              locationSubscription();
+            },
+          );
+        });
+      } else {
+        console.log("not granted ");
+        throw new Error("Location permission not granted");
+      }
+    } catch (error) {
+      console.error('Error requesting location permission:', error);
+      throw error;
+    }
+  };
+
+  ReactNativeForegroundService.add_task(
+    async () => {
       
+      try {
+        const loc = await perlocation();
+       
+        console.log('Current Location:', loc);
+      } catch (error) {
+        console.error('Error getting location:', error);
+      }
     },
     {
-      delay: 100,
+      delay: 1500,
       onLoop: true,
       taskId: 'taskid',
       onError: (e) => console.log('Error logging:', e),
-    }
+    },
   );
-  
- 
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centeredView}>
-        <Text>
-          HomePage
-        </Text>
+        <Text>HomePage</Text>
+      
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
