@@ -1,24 +1,24 @@
-import React, { useEffect ,useState} from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import { PermissionsAndroid } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, SafeAreaView, StyleSheet, Button} from 'react-native';
+import {PermissionsAndroid} from 'react-native';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import RNLocation from 'react-native-location';
+import {Alert} from 'react-native';
 
 const App = () => {
-  
-  
 
-
-  useEffect(() => {
+  
+   useEffect(() => {
     const requestPermission = async () => {
-      console.log("RequestPermission got called");
+      console.log('RequestPermission got called');
 
       try {
         const backgroundgranted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
           {
             title: 'Background Location Permission',
-            message: 'We need access to your location for live quality updates.',
+            message:
+              'We need access to your location for live quality updates.',
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
@@ -26,17 +26,20 @@ const App = () => {
         );
 
         if (backgroundgranted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("Background permission granted");
+          console.log('Background permission granted');
         } else {
-          console.log("Background permission not granted");
+          
+          console.log('Background permission not granted');
         }
       } catch (error) {
-        console.error("Error requesting background permission:", error);
+        console.error('Error requesting background permission:', error);
       }
     };
 
     requestPermission();
   }, []);
+
+
 
   RNLocation.configure({
     distanceFilter: 100,
@@ -44,11 +47,11 @@ const App = () => {
       ios: 'best',
       android: 'balancedPowerAccuracy',
     },
-  
+
     androidProvider: 'auto',
-    interval: 5000, 
-    fastestInterval: 10000, 
-    maxWaitTime: 5000, 
+    interval: 5000,
+    fastestInterval: 10000,
+    maxWaitTime: 5000,
 
     activityType: 'other',
     allowsBackgroundLocationUpdates: false,
@@ -57,6 +60,9 @@ const App = () => {
     pausesLocationUpdatesAutomatically: false,
     showsBackgroundLocationIndicator: false,
   });
+
+
+
 
   const perlocation = async () => {
     try {
@@ -68,10 +74,10 @@ const App = () => {
       });
 
       if (granted) {
-        console.log("permission granted", granted);
+        console.log('permission granted', granted);
         return new Promise((resolve, reject) => {
           const locationSubscription = RNLocation.subscribeToLocationUpdates(
-            (locations) => {
+            locations => {
               if (locations && locations.length > 0) {
                 locationSubscription();
                 resolve(locations);
@@ -84,8 +90,8 @@ const App = () => {
           );
         });
       } else {
-        console.log("not granted ");
-        throw new Error("Location permission not granted");
+        console.log('not granted ');
+        throw new Error('Location permission not granted');
       }
     } catch (error) {
       console.error('Error requesting location permission:', error);
@@ -93,30 +99,51 @@ const App = () => {
     }
   };
 
-  ReactNativeForegroundService.add_task(
-    async () => {
-      
-      try {
-        const loc = await perlocation();
-       
-        console.log('Current Location:', loc);
-      } catch (error) {
-        console.error('Error getting location:', error);
-      }
-    },
-    {
-      delay: 1500,
-      onLoop: true,
-      taskId: 'taskid',
-      onError: (e) => console.log('Error logging:', e),
-    },
-  );
+
+
+  const startForegroundService = () => {
+    ReactNativeForegroundService.add_task(
+      async () => {
+        try {
+          const loc = await perlocation();
+
+          console.log('Current Location:', loc);
+        } catch (error) {
+          console.error('Error getting location:', error);
+        }
+      },
+
+      {
+        delay: 1500,
+        onLoop: true,
+        taskId: 'taskid',
+        onError: e => console.log('Error logging:', e),
+      },
+    );
+  };
+
+
+  const clickedOnStartTrip = () => {
+    startForegroundService();
+    Alert.alert('Trip started');
+    
+  };
+
+  const clickedOnStopTrip = async() => {
+    ReactNativeForegroundService.remove_task('taskid');
+    Alert.alert('Location Fetching stopped');
+    
+  };
+
+ 
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centeredView}>
         <Text>HomePage</Text>
-      
+        <Button title="Start Trip" onPress={() => clickedOnStartTrip()} />
+
+        <Button title="Stop Trip" onPress={() => clickedOnStopTrip()} />
       </View>
     </SafeAreaView>
   );
