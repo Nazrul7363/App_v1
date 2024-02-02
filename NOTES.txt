@@ -1,0 +1,12 @@
+Important Notes
+With Android 13, you need to explicty ask for a Post notification permission by the users, this repository does and will not contain code to request perission by the users.
+
+You can use this repo https://www.npmjs.com/package/react-native-permissions to ask for the permission by the users.
+
+Also you need to mention the permission in android manifest as well
+
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+
+
+

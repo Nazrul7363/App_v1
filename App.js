@@ -6,9 +6,7 @@ import RNLocation from 'react-native-location';
 import {Alert} from 'react-native';
 
 const App = () => {
-
-  
-   useEffect(() => {
+  useEffect(() => {
     const requestPermission = async () => {
       console.log('RequestPermission got called');
 
@@ -28,7 +26,6 @@ const App = () => {
         if (backgroundgranted === PermissionsAndroid.RESULTS.GRANTED) {
           console.log('Background permission granted');
         } else {
-          
           console.log('Background permission not granted');
         }
       } catch (error) {
@@ -38,8 +35,6 @@ const App = () => {
 
     requestPermission();
   }, []);
-
-
 
   RNLocation.configure({
     distanceFilter: 100,
@@ -60,9 +55,6 @@ const App = () => {
     pausesLocationUpdatesAutomatically: false,
     showsBackgroundLocationIndicator: false,
   });
-
-
-
 
   const perlocation = async () => {
     try {
@@ -99,8 +91,6 @@ const App = () => {
     }
   };
 
-
-
   const startForegroundService = () => {
     ReactNativeForegroundService.add_task(
       async () => {
@@ -122,20 +112,19 @@ const App = () => {
     );
   };
 
-
   const clickedOnStartTrip = () => {
     startForegroundService();
     Alert.alert('Trip started');
-    
   };
 
-  const clickedOnStopTrip = async() => {
+  const clickedOnStopTrip = async () => {
     ReactNativeForegroundService.remove_task('taskid');
-    Alert.alert('Location Fetching stopped');
-    
+    if (ReactNativeForegroundService.is_task_running('taskid')) {
+      Alert.alert('Task is still running');
+    } else {
+      Alert.alert('Task removed');
+    }
   };
-
- 
 
   return (
     <SafeAreaView style={styles.container}>

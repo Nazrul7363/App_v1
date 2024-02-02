@@ -7,23 +7,26 @@ import App from './App';
 import {name as appName} from './app.json';
 import RNLocation from 'react-native-location';
 
-// import ic_launcher from './android/app/src/main/res/mipmap-hdpi/ic_launcher.png'
-
 
 
 ReactNativeForegroundService.register();
-var taskid=144;
+
+
+
+const close = () => {
+  console.log("close button of notification is getting displayed");
+
+}
+
+
 
   ReactNativeForegroundService.start({
     id: 1244,
     title: "Foreground Service",
     message: "We are live World",
     icon: "ic_launcher",
-    button: true,
-    button2: true,
-    buttonText: "Button",
-    button2Text: "Another Button",
-    buttonOnPress: "cray",
+    button:true,
+    buttonText:"Testing",
     setOnlyAlertOnce: true,
     color: "#000000",
     progress: {
