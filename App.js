@@ -6,6 +6,8 @@ import RNLocation from 'react-native-location';
 import {Alert} from 'react-native';
 
 const App = () => {
+  const [isTripStarted, setTripStarted] = useState(false);
+
   useEffect(() => {
     const requestPermission = async () => {
       console.log('RequestPermission got called');
@@ -92,6 +94,21 @@ const App = () => {
   };
 
   const startForegroundService = () => {
+    ReactNativeForegroundService.start({
+      id: 1244,
+      title: 'Foreground Service',
+      message: 'We are live World',
+      icon: 'ic_launcher',
+      button: true,
+      buttonText: 'Testing',
+      setOnlyAlertOnce: true,
+      color: '#000000',
+      progress: {
+        max: 100,
+        curr: 50,
+      },
+    });
+
     ReactNativeForegroundService.add_task(
       async () => {
         try {
@@ -113,16 +130,29 @@ const App = () => {
   };
 
   const clickedOnStartTrip = () => {
-    startForegroundService();
-    Alert.alert('Trip started');
+    if (!isTripStarted) {
+      startForegroundService();
+      Alert.alert('Trip started');
+      setTripStarted(true);
+    } else {
+      Alert.alert('Trip Already Started');
+    }
   };
 
   const clickedOnStopTrip = async () => {
-    ReactNativeForegroundService.remove_task('taskid');
-    if (ReactNativeForegroundService.is_task_running('taskid')) {
-      Alert.alert('Task is still running');
+    if (isTripStarted) {
+      ReactNativeForegroundService.remove_task('taskid');
+
+      ReactNativeForegroundService.stop();
+
+      if (ReactNativeForegroundService.is_task_running('taskid')) {
+        Alert.alert('Task is still running');
+      } else {
+        Alert.alert('Task removed');
+        setTripStarted(false);
+      }
     } else {
-      Alert.alert('Task removed');
+      Alert.alert('Trip is already Stopped');
     }
   };
 
