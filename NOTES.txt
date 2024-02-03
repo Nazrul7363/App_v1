@@ -9,4 +9,7 @@ Also you need to mention the permission in android manifest as well
 
 
 
+To Implement Linking u need to Add 
+<uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
+in this manifest.xml file

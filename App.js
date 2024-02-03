@@ -1,13 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Button} from 'react-native';
+import React, {useEffect, useState,useCallback} from 'react';
+import {View, Text, SafeAreaView, StyleSheet, Button, Linking} from 'react-native';
 import {PermissionsAndroid} from 'react-native';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
-import RNLocation from 'react-native-location';
+import RNLocation from 'react-native-location'
+
 import {Alert} from 'react-native';
-import GetLocation from 'react-native-get-location'
+import GetLocation from 'react-native-get-location';
+import Dialog from "react-native-dialog";
+
 
 const App = () => {
   const [isTripStarted, setTripStarted] = useState(false);
+  const [loct,setLoct]=useState();
+  const [visible ,setVisible]=useState(false);
+
+  const URL = "https://phpstack-560575-3696471.cloudwaysapps.com/ercproxy/version.php/?version=2.0.1";
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -39,27 +46,6 @@ const App = () => {
     requestPermission();
   }, []);
 
-  RNLocation.configure({
-    distanceFilter: 100,
-    desiredAccuracy: {
-      ios: 'best',
-      android: 'balancedPowerAccuracy',
-    },
-
-    androidProvider: 'auto',
-    interval: 5000,
-    fastestInterval: 10000,
-    maxWaitTime: 5000,
-
-    activityType: 'other',
-    allowsBackgroundLocationUpdates: true,
-    headingFilter: 1,
-    headingOrientation: 'portrait',
-    pausesLocationUpdatesAutomatically: false,
-    showsBackgroundLocationIndicator: false,
-  });
-
-
 
   const perlocation = async () => {
     try {
@@ -80,6 +66,7 @@ const App = () => {
   
         console.log('Current Location:', location);
         return location;
+
       } else {
         console.log('not granted ');
         throw new Error('Location permission not granted');
@@ -108,8 +95,10 @@ const App = () => {
       async () => {
         try {
           const loc = await perlocation();
+          setLoct(loc);
 
-          console.log('Current Location:', loc);
+
+          console.log('Current Locationss:', loc);
         } catch (error) {
           console.error('Error getting location:', error);
         }
@@ -151,13 +140,54 @@ const App = () => {
     }
   };
 
+ 
+
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  const handleUpdate = async ({URL}) => {
+    await Linking.canOpenURL(URL).then(supported => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + URL);
+      } else {
+        return Linking.openURL(URL);
+      }
+    }).catch(err => console.error('An error occurred', err));
+  };
+  
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centeredView}>
         <Text>HomePage</Text>
-        <Button title="Start Trip" onPress={() => clickedOnStartTrip()} />
+        <Button title="Start Trip" style={{ marginTop: 10 }} onPress={() => clickedOnStartTrip()} />
 
         <Button title="Stop Trip" onPress={() => clickedOnStopTrip()} />
+        <Button title="Show Dialogue" onPress={() => showDialog()} />
+
+       
+
+        <Dialog.Container visible={visible}>
+        <Dialog.Title>Account delete</Dialog.Title>
+        <Dialog.Description>
+          Update Available . Do You Want to Update ?
+        </Dialog.Description>
+        <Dialog.Button label="Close" onPress={handleCancel} />
+        <Dialog.Button label="Update" onPress={() => handleUpdate({URL})} />
+      </Dialog.Container>
+
+
+        <Text>{JSON.stringify(loct)}</Text>
+
+        
+
       </View>
     </SafeAreaView>
   );
