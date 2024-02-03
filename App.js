@@ -4,6 +4,7 @@ import {PermissionsAndroid} from 'react-native';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import RNLocation from 'react-native-location';
 import {Alert} from 'react-native';
+import GetLocation from 'react-native-get-location'
 
 const App = () => {
   const [isTripStarted, setTripStarted] = useState(false);
@@ -51,12 +52,14 @@ const App = () => {
     maxWaitTime: 5000,
 
     activityType: 'other',
-    allowsBackgroundLocationUpdates: false,
+    allowsBackgroundLocationUpdates: true,
     headingFilter: 1,
     headingOrientation: 'portrait',
     pausesLocationUpdatesAutomatically: false,
     showsBackgroundLocationIndicator: false,
   });
+
+
 
   const perlocation = async () => {
     try {
@@ -66,23 +69,17 @@ const App = () => {
           detail: 'coarse',
         },
       });
-
+  
       if (granted) {
         console.log('permission granted', granted);
-        return new Promise((resolve, reject) => {
-          const locationSubscription = RNLocation.subscribeToLocationUpdates(
-            locations => {
-              if (locations && locations.length > 0) {
-                locationSubscription();
-                resolve(locations);
-              } else {
-                locationSubscription();
-                resolve(null);
-              }
-              locationSubscription();
-            },
-          );
+  
+        const location = await GetLocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 60000,
         });
+  
+        console.log('Current Location:', location);
+        return location;
       } else {
         console.log('not granted ');
         throw new Error('Location permission not granted');
@@ -92,21 +89,19 @@ const App = () => {
       throw error;
     }
   };
+  
 
   const startForegroundService = () => {
     ReactNativeForegroundService.start({
       id: 1244,
       title: 'Foreground Service',
-      message: 'We are live World',
+      message: 'Location is live ',
       icon: 'ic_launcher',
       button: true,
       buttonText: 'Testing',
       setOnlyAlertOnce: true,
-      color: '#000000',
-      progress: {
-        max: 100,
-        curr: 50,
-      },
+      color: '#000000'
+      
     });
 
     ReactNativeForegroundService.add_task(
@@ -121,7 +116,7 @@ const App = () => {
       },
 
       {
-        delay: 1500,
+        delay: 15000,
         onLoop: true,
         taskId: 'taskid',
         onError: e => console.log('Error logging:', e),

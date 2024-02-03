@@ -13,6 +13,7 @@
     "@supersami/rn-foreground-service": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.72.0",
+    "react-native-get-location": "^4.0.1",
     "react-native-location": "^2.5.0"
   },
   "devDependencies": {
