@@ -15,7 +15,7 @@ export default function Home({navigation}) {
             mode="contained"
             onPress={() => navigation.navigate('EyeGlass')}
             buttonColor="#E29393"
-            labelStyle={{fontSize: 16}}>
+            labelStyle={{fontSize: 18}}>
             Eye Glasses
           </Button>
           <Button
@@ -23,7 +23,7 @@ export default function Home({navigation}) {
             mode="contained"
             onPress={() => navigation.navigate('SunGlass')}
             buttonColor="#808080"
-            labelStyle={{fontSize: 16}}>
+            labelStyle={{fontSize: 18}}>
             Sun Glasses
           </Button>
           <Button
@@ -31,7 +31,7 @@ export default function Home({navigation}) {
             mode="contained"
             onPress={() => navigation.navigate('ComputerGlass')}
             buttonColor="#E9D047"
-            labelStyle={{fontSize: 16}}>
+            labelStyle={{fontSize: 18}}>
             Computer Glasses
           </Button>
           <Button
@@ -39,7 +39,7 @@ export default function Home({navigation}) {
             mode="contained"
             onPress={() => navigation.navigate('ReadingGlass')}
             buttonColor="#008080"
-            labelStyle={{fontSize: 16}}>
+            labelStyle={{fontSize: 18}}>
             Reading Glasses
           </Button>
           <Button
@@ -47,7 +47,7 @@ export default function Home({navigation}) {
             mode="contained"
             onPress={() => navigation.navigate('PowerLens')}
             buttonColor="#F1AA53"
-            labelStyle={{fontSize: 16}}>
+            labelStyle={{fontSize: 18}}>
             Power Lenses
           </Button>
           <Button
@@ -55,7 +55,7 @@ export default function Home({navigation}) {
             mode="contained"
             onPress={() => navigation.navigate('ContactLens')}
             buttonColor="#8282FF"
-            labelStyle={{fontSize: 16}}>
+            labelStyle={{fontSize: 18}}>
             Contact Lenses
           </Button>
         </View>
@@ -70,6 +70,8 @@ const styles = StyleSheet.create({
   viewStyle: {
     
     backgroundColor: '#ffffff',
+  
+    
   },
   button: {
     margin: 15,
@@ -77,5 +79,6 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
     padding: 5,
+    
   },
 });

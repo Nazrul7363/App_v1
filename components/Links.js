@@ -1,9 +1,9 @@
 import React from 'react';
-import {Linking} from 'react-native';
-import {Text, Icon, MD3Colors} from 'react-native-paper';
+import { Linking, View } from 'react-native';
+import { Text, Icon, MD3Colors } from 'react-native-paper';
 
-const LinkComponent = ({name, url}) => {
-  const handleUpdate = async ({URL}) => {
+const LinkComponent = ({ name, url }) => {
+  const handleUpdate = async ({ URL }) => {
     try {
       const supported = await Linking.canOpenURL(URL);
       if (!supported) {
@@ -17,16 +17,29 @@ const LinkComponent = ({name, url}) => {
   };
 
   return (
-    <Text
-      onPress={() => handleUpdate({URL: url})}
-      variant="bodyLarge"
-      style={{color: 'blue',paddingBottom:15,}}>
-      <Icon  source="camera" color={MD3Colors.error50} size={20} 
+    <View style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingBottom: 25,
+    }}>
+      <Icon
+        source={require('../icons/linklogo.png')}
+        size={20}
       />
-
-      {name}
-    </Text>
+      <Text
+        onPress={() => handleUpdate({ URL: url })}
+        style={{
+          color: '#3d9cd2',
+          fontSize: 18,
+          paddingLeft:5
+        }}>
+        {name}
+      </Text>
+    </View>
   );
+  
+  
 };
 
 export default LinkComponent;
