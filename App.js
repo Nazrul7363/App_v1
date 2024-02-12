@@ -29,10 +29,10 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Home"
-          screenOptions={({ navigation }) => ({
+          screenOptions={{
             headerTitle:(props)=> <LogoTitle {...props}/>,
             headerRight: (props) => <HeaderRight {...props} />,
-          })}
+          }}
         >
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="EyeGlass" component={EyeGlass} />

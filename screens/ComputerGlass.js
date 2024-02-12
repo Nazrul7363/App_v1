@@ -1,11 +1,15 @@
-import { View, Text } from 'react-native'
+import { View, Text ,SafeAreaView } from 'react-native'
 import React from 'react'
+import SearchBox from '../components/SearchBox'
+
 
 const ComputerGlass = () => {
   return (
-    <View>
-      <Text>ComputerGlass</Text>
-    </View>
+    <SafeAreaView>
+      <View style={{marginTop:30}}>
+        <SearchBox />
+      </View>
+    </SafeAreaView>
   )
 }
 

@@ -1,0 +1,180 @@
+import {View, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {Text, TextInput, Provider, Button} from 'react-native-paper';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+DropDownPicker.setListMode('SCROLLVIEW');
+
+export default function SearchBox() {
+  const [keywords, setKeywords] = useState('');
+
+  const handleKeywordsChange = text => {
+    setKeywords(text);
+  };
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'None', value: 'None'},
+    {label: 'Default sorting', value: 'Default sorting'},
+    {label: 'Sort by popularity', value: 'Sort by popularity'},
+    {label: 'Sort by average rating', value: 'Sort by average rating'},
+    {label: 'Sort by latest', value: 'Sort by latest'},
+    {label: 'Sort by price: low to high', value: 'Sort by price: low to high'},
+    {label: 'Sort by price: high to low', value: 'Sort by price: high to low'},
+    {label: 'Sort by name', value: 'Sort by name'},
+  ]);
+
+  return (
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <Text
+        style={{
+          fontSize: 25,
+          fontStyle: 'normal',
+          color: 'grey',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        Search Box{' '}
+        <Text style={{fontSize: 15, color: 'grey'}}>(All Fields Optional)</Text>
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        <TextInput
+          style={{
+            height: 45,
+            width: 160,
+            margin: 10,
+          }}
+          label="Search Keyword"
+          value={keywords}
+          onChangeText={handleKeywordsChange}
+          mode="outlined"
+        />
+        <Provider>
+          <DropDownPicker
+          placeholder="Sort By"
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            autoScroll
+            searchable={true}
+            dropDownContainerStyle={{
+              width: 220,
+              alignSelf: 'center',
+              top: 65,
+              left: 0,
+              zIndex: 1,
+            }}
+            style={{
+              width: 220,
+              top: 15,
+            }}
+          />
+        </Provider>
+      </View>
+      <TouchableOpacity
+        style={{right: 160}}
+        onPress={() => console.log('pressed')}>
+        <Image
+          style={{width: 40, height: 40}}
+          source={require('../icons/twoArrow.png')}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+
+
+import {View, Text} from 'react-native';
+import React from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+import DropDown from './DropDown';
+
+export default function ProductFilters() {
+  const categories = ['All categories', 'r', 'c', 'd', 'e', 'f', 'g'];
+  const productColor = [];
+  const productFrameType = [];
+  const prductGender = [];
+  const productFrameShape = [];
+  const productFramematerial = [];
+  const productFrameWidth = [];
+
+  return (
+
+    <View style={{flexDirection:'row'}}>
+        <View style={{flexDirection:'column'}}>
+      <View style={{margin:10}}>
+        <DropDown arr={categories} placeholder={'Categories'} />
+      </View>
+      <View style={{margin:10}}>
+        <DropDown arr={categories} placeholder={'Categories'} />
+      </View>
+      <View style={{margin:10}}>
+        <DropDown arr={categories} placeholder={'Categories'} />
+      </View>
+    </View>
+    <View style={{flexDirection:'column'}}>
+      <View style={{margin:10}}>
+        <DropDown arr={categories} placeholder={'Categories'} />
+      </View>
+      <View style={{margin:10}}>
+        <DropDown arr={categories} placeholder={'Categories'} />
+      </View>
+      <View style={{margin:10}}>
+        <DropDown arr={categories} placeholder={'Categories'} />
+      </View>
+    </View>
+    
+    </View>
+    
+
+
+   
+  );
+}
+
+
+import {View, Text} from 'react-native';
+import React, {useState} from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+export default function Pcategories({arr ,placeholder }) {
+  
+  const defaultplaceholder=placeholder;
+
+
+  const [items,setItems] = useState(arr.map(item => ({label: item, value: item})));
+
+  const [value, setValue] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  return (
+    <View>
+      
+      <DropDownPicker
+        placeholder={defaultplaceholder}
+        open={open}
+        value={value}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        items={items}
+        searchable={true}
+        containerStyle={{height: 40 , width:180 ,zindex:1}}
+        style={{backgroundColor: 'red'}}
+        itemStyle={{
+          justifyContent: 'flex-start',
+        }}
+      
+
+      />
+    </View>
+  );
+}

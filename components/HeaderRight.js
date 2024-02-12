@@ -3,7 +3,8 @@ import {View, Image} from 'react-native';
 import {IconButton, Menu, Button} from 'react-native-paper';
 import {MD3Colors} from 'react-native-paper';
 
-export default function LogoTitle() {
+
+export default function HeaderRight() {
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
@@ -14,13 +15,13 @@ export default function LogoTitle() {
       <IconButton
         icon={() => (
           <Image
-            source={require('../icons/cart.png')}
+            source={require('../icons/cartsvg.png')}
             style={{width: 40, height: 40}}
           />
         )}
         color={MD3Colors.error50}
         size={30}
-        onPress={() => console.log('Pressed')}
+        onPress={() => navigation.navigate('cartPag')}
       />
 
       <Menu
