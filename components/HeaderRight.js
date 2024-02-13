@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {View, Image} from 'react-native';
 import {IconButton, Menu, Button} from 'react-native-paper';
 import {MD3Colors} from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import CartPage from './CartPage'
+
 
 
 export default function HeaderRight() {
@@ -9,6 +12,7 @@ export default function HeaderRight() {
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
+  const navigation = useNavigation();
 
   return (
     <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center'}}>
@@ -21,7 +25,7 @@ export default function HeaderRight() {
         )}
         color={MD3Colors.error50}
         size={30}
-        onPress={() => navigation.navigate('cartPag')}
+        onPress={() =>navigation.navigate('CartPage')}
       />
 
       <Menu

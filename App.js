@@ -11,6 +11,9 @@ import PowerLens from './screens/PowerLens';
 import ContactLens from './screens/ContactLens';
 import LogoTitle from './components/LogoTitle';
 import HeaderRight from './components/HeaderRight';
+import CartPage from './components/CartPage';
+import ProductPage from './components/ProductPage'
+
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +44,9 @@ export default function App() {
           <Stack.Screen name="ReadingGlass" component={ReadingGlass} />
           <Stack.Screen name="PowerLens" component={PowerLens} />
           <Stack.Screen name="ContactLens" component={ContactLens} />
+          <Stack.Screen name="CartPage" component={CartPage} />
+          <Stack.Screen name="ProductPage" component={ProductPage} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

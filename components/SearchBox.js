@@ -24,9 +24,9 @@ export default function SearchBox() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.searchText}>
+      <Text style={styles.biggerText}>
         Search Box
-        <Text style={styles.optText}>(All Fields Optional)</Text>
+        <Text style={styles.smallerText}>(All Fields Optional)</Text>
       </Text>
       <View style={styles.inputContainer}>
         <View style={styles.textInpStyle}>
@@ -49,33 +49,31 @@ export default function SearchBox() {
   );
 }
 
-const styles = StyleSheet.create({
+styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  searchText: {
-    fontSize: 25,
-    fontStyle: 'normal',
-    color: 'grey',
-    marginBottom: 10,
-  },
-  optText: {
-    fontSize: 15,
-    color: 'grey',
+    left: 5,
   },
   inputContainer: {
     flexDirection: 'row',
+  },
+  biggerText: {
+    fontSize: 25,
+    fontStyle: 'normal',
+    color: 'grey',
+    justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 10,
+  },
+  smallerText: {fontSize: 15, color: 'grey'},
+  dropdownStyle: {
+    top: 5,
   },
   textInpStyle: {
-    flex: 1,
-    marginRight: 20,
-
+    paddingRight: 20,
+    width: 170,
   },
-  dropDownContainer: {
-    flex: 1,
+  dropdownStyle: {
+    padding: 7,
   },
 });
