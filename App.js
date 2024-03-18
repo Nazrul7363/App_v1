@@ -14,7 +14,7 @@ const App = () => {
   const [loct,setLoct]=useState();
   const [visible ,setVisible]=useState(false);
 
-  const URL = "https://phpstack-560575-3696471.cloudwaysapps.com/ercproxy/version.php/?version=2.0.1";
+  const URL = "https://abvcogjjg.cloudwaysapps.com/ercproxy/version.php/?version=2.0.1";
 
   useEffect(() => {
     const requestPermission = async () => {
